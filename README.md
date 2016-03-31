@@ -16,10 +16,10 @@ Not Working: Need to abstract and generalize schema defining.
 
 ## Specs
 [JSONAPI-Server](https://github.com/holidayextras/jsonapi-server):
-# Node.js (server)
-# Express (framework)
-# [Joi](https://github.com/hapijs/joi/blob/v8.0.5/API.md) (validation)
-# [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker) (generating synthetic data)
+* Node.js (server)
+* Express (framework)
+* [Joi](https://github.com/hapijs/joi/blob/v8.0.5/API.md) (validation)
+* [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker) (generating synthetic data)
 
 [Client](emberjs.com):
-# Ember.js
+* Ember.js
