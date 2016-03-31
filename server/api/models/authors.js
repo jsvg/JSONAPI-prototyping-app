@@ -27,6 +27,5 @@ var attrs = {
     })
 };
 
-var data = mixins.generateData(4, model, props);
+var data = mixins.generateData(3, model, props);
 mixins.genJsonApiSchema(model, attrs, data);
-module.exports = mixins.extractIds(data);

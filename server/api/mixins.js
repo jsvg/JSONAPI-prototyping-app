@@ -13,18 +13,19 @@ jsf.extend('chance', function(chance){
   return chance;
 });
 
-/* functions for generating schemas */
-function genModelData(n, model, props, refs) {
-  // set defaults
-  n = n || 10;
-  model = model || "model";
+/*********************************
+ * mixins for generating schemas *
+ *********************************/
+// collect randomly generated IDs of models for use in relationship mapping
+var idStore = {};
 
+// consume schemas to create n number of jsf json data for "examples" in jsonApi
+function genModelData(n, model, props, refs) {
   // construct "required" keys for item properties
   var keys = ['id', 'type'];
   for ( var k in props ) {
     keys.push(k);
   }
-
   // set base schema object
   var base = {
     type: 'array',
@@ -44,18 +45,27 @@ function genModelData(n, model, props, refs) {
       required: keys
     }
   };
-
   // expand base object with properties
   for (var attr in props) {
     base.items.properties[attr] = props[attr];
   }
 
-  // check for refs
-  var data = refs ? jsf(base, refs) : jsf(base);
+  // handling for relationships
+  if ( refs ) {
+    refsSchema = [{
+      id: refs.model,
+      type: refs.type ? refs.type : 'string',
+      chance: { randInArray: [refs.ids] }
+    }];
+  }
+
+  var data = refs ? jsf(base, refsSchema) : jsf(base);
+  idStore[model] = data.map(function(i) { return i.id; });
   return data;
 }
 
-function genJsonApiSchema(model, attrs, data, namespace) {
+// serialize generated json data
+function genJsonApiSchema(model, attrs, data, namespace, idStore) {
   namespace = namespace || 'json:api';
   var base = {
     namespace: namespace,
@@ -68,12 +78,8 @@ function genJsonApiSchema(model, attrs, data, namespace) {
   return jsonApi.define(base);
 }
 
-function extractIds(data) {
-  return data.map(function(i) { return i.id; });
-}
-
 module.exports = {
   generateData: genModelData,
   genJsonApiSchema: genJsonApiSchema,
-  extractIds: extractIds
+  ids: idStore
 };
