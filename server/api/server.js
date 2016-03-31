@@ -1,47 +1,47 @@
-"use strict";
+'use strict';
 var server = module.exports = { };
-var jsonApi = require("jsonapi-server");
-var fs = require("fs");
-var path = require("path");
+var jsonApi = require('jsonapi-server');
+var fs = require('fs');
+var path = require('path');
 
 jsonApi.setConfig({
   swagger: {
-    title: "Mock API",
-    version: "0.0.0",
-    description: "API for Mock Database",
+    title: 'Mock API',
+    version: '0.0.0',
+    description: 'API for Mock Database',
     contact: {
-      name: "Julian van Giessen",
-      email: "julian.vangiessen@gmail.com"
+      name: 'Julian van Giessen',
+      email: 'julian.vangiessen@gmail.com'
     },
-    license: { name: "WTFPL" }
+    license: { name: 'WTFPL' }
   },
-  protocol: "http",
-  hostname: "localhost",
+  protocol: 'http',
+  hostname: 'localhost',
   port: 7331,
-  base: "api",
+  base: 'api',
   meta: {
-    description: "Rapid Prototyping API"
+    description: 'Rapid Prototyping API'
   }
 });
 
 jsonApi.authenticate(function(request, callback) {
-  if (request.headers.blockme) return callback("Fail");
-  if (request.cookies.blockMe) return callback("Fail");
+  if (request.headers.blockme) return callback('Fail');
+  if (request.cookies.blockMe) return callback('Fail');
   return callback();
 });
 
-require("./mixins.js");
-fs.readdirSync(path.join(__dirname, "/models"))
+require('./mixins.js');
+fs.readdirSync(path.join(__dirname, '/models'))
   .filter(function(filename) {
     return /^[a-z].*\.js$/.test(filename);
   })
   .map(function(filename) {
-    return path.join(__dirname, "/models/", filename);
+    return path.join(__dirname, '/models/', filename);
   })
   .forEach(require);
 
 jsonApi.onUncaughtException(function(request, error) {
-  var errorDetails = error.stack.split("\n");
+  var errorDetails = error.stack.split('\n');
   console.error(JSON.stringify({
     request: request,
     error: errorDetails.shift(),
