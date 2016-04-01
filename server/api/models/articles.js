@@ -1,7 +1,3 @@
-var buildRoute = require('../abstractRouteConstructor');
-require('./authors');
-require('./tags');
-
 var schema = {
   modelName: 'articles',
   nRecords: 15,
@@ -13,6 +9,10 @@ var schema = {
     body: {
       type: 'string',
       faker: 'lorem.paragraph'
+    },
+    impact: {
+      type: 'number',
+      faker: 'random.number'
     }
   },
   relationships: {
@@ -34,4 +34,4 @@ var schema = {
   }
 };
 
-buildRoute(schema);
+module.exports = schema;

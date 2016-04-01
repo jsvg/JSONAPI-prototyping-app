@@ -1,11 +1,8 @@
+var ids = require('./recordLoader');
 var jsonApi = require('jsonapi-server');
 var jsf = require('json-schema-faker');
 var mixins = require('./mixins');
 var _ = require('lodash');
-
-var _idStore = {};
-
-
 
 function _buildRouteSchema(schema) {
   var routeSchema = {};
@@ -39,9 +36,9 @@ function _buildRelationshipSchema(schema) {
     o.chance = {};
 
     if (schema.relationships[rel].relation === 'one') {
-      o.chance.randInArray = [_idStore[model]];
+      o.chance.randInArray = [ids[model]];
     } else if (schema.relationships[rel].relation === 'many') {
-      o.chance.randInArrayMany = [_idStore[model], model];
+      o.chance.randInArrayMany = [ids[model], model];
     }
 
     rels.push(o);
@@ -61,7 +58,7 @@ function _buildDataSchema(schema) {
   base.items.properties = {};
   base.items.properties.id = {};
   base.items.properties.type = {};
-  base.items.properties.id = { type: 'string', faker: 'random.uuid' };
+  base.items.properties.id = { type: 'string', chance: { popId: [ids, schema.modelName]} };
   base.items.properties.type = { pattern: schema.modelName };
   base.items.required = _.chain(schema)
     .omit(['modelName','nRecords'])
@@ -90,8 +87,8 @@ function _buildDataSchema(schema) {
         };
       // relationship case "many"
       } else if ( schema.relationships[propB].relation === 'many' ) {
-        min = schema.relationships[propB].nMin || Math.ceil(_idStore[schema.relationships[propB].targetModel].length * 0.1);
-        max = schema.relationships[propB].nMax || Math.ceil(_idStore[schema.relationships[propB].targetModel].length * 0.5);
+        min = schema.relationships[propB].nMin || Math.ceil(ids[schema.relationships[propB].targetModel].length * 0.1);
+        max = schema.relationships[propB].nMax || Math.ceil(ids[schema.relationships[propB].targetModel].length * 0.5);
         base.items.properties[propB] = {
           type: 'array',
           items: { $ref: schema.relationships[propB].targetModel },
@@ -124,27 +121,12 @@ function _decomposeSchema(schema) {
 
 
 
-function buildRoute(schema, verbose) {
-  if (verbose===1) { console.log('==========================='); }
-  if (verbose===1) { console.log('Generating:', schema.modelName); }
-  
-  if (verbose===2) { console.log('Decomposing schema...'); }
+function buildRoute(schema) {
   var decomposition = _decomposeSchema(schema);
-  if (verbose===2) { console.log('Decomponosition success'); }
-  if (verbose===3) { console.log(decomposition); }
-  if (verbose===4) { console.log('----------------------'); }
-  
-  if (verbose===2) { console.log('Generating schema data...'); }
-  var data = jsf(decomposition.dataSchema, decomposition.relationships);
+  data = jsf(decomposition.dataSchema, decomposition.relationships);
   rt = decomposition.routeSchema;
   rt.examples = data;
-  _idStore[decomposition.modelName] = data.map(function(i) { return i.id; }); // model IDs to idStore
-  if (verbose===2) { console.log('Generated n records:', data.length); }
-  if (verbose===4) { console.log(data[0].mockTags); }
-
-  if (verbose===2) { console.log('Loading route...'); }
   jsonApi.define(rt);
-  if (verbose===2) { console.log('Route created'); }
 }
 
 module.exports = buildRoute;

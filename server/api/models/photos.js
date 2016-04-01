@@ -1,10 +1,6 @@
-var buildRoute = require('../abstractRouteConstructor');
-require('./authors');
-require('./tags');
-
 var schema = {
   modelName: 'photos',
-  nRecords: 10,
+  nRecords: 1000,
   attributes: {
     label: {
       type: 'string',
@@ -24,9 +20,9 @@ var schema = {
       targetModel: 'tags',
       relation: 'many',
       nMin: 1,
-      nMax: 6
+      nMax: 5
     }
   }
 };
 
-buildRoute(schema);
+module.exports = schema;

@@ -28,6 +28,15 @@ jsf.extend('chance', function(chance) {
   return chance;
 });
 
+jsf.extend('chance', function(chance) {
+  chance.mixin({
+    popId: function(ids, model) {
+      return ids.forCreation[model].pop();
+    }
+  });
+  return chance;
+});
+
 function getValidator(type, model, as) {
   model = model || 'none';
   as = as || 'none';

@@ -1,5 +1,3 @@
-var buildRoute = require('../abstractRouteConstructor');
-
 var schema = {
   modelName: 'tags',
   nRecords: 15,
@@ -21,4 +19,4 @@ var schema = {
   }
 };
 
-buildRoute(schema);
+module.exports = schema;

@@ -1,8 +1,6 @@
-var buildRoute = require('../abstractRouteConstructor');
-
 var schema = {
   modelName: 'authors',
-  nRecords: 2,
+  nRecords: 10,
   attributes: {
     firstName: {
       type: 'string',
@@ -36,4 +34,4 @@ var schema = {
   }
 };
 
-buildRoute(schema);
+module.exports = schema;

@@ -1,10 +1,6 @@
-var buildRoute = require('../abstractRouteConstructor');
-require('./articles');
-require('./authors');
-
 var schema = {
   modelName: 'comments',
-  nRecords: 100,
+  nRecords: 3000,
   attributes: {
     body: {
       type: 'string',
@@ -23,4 +19,4 @@ var schema = {
   }
 };
 
-buildRoute(schema);
+module.exports = schema;

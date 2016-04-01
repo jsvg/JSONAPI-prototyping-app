@@ -24,23 +24,13 @@ jsonApi.setConfig({
   }
 });
 
-jsonApi.authenticate(function(request, callback) {
+jsonApi.authenticate((request, callback) => {
   if (request.headers.blockme) return callback('Fail');
   if (request.cookies.blockMe) return callback('Fail');
   return callback();
 });
 
-require('./mixins.js');
-fs.readdirSync(path.join(__dirname, '/models'))
-  .filter(function(filename) {
-    return /^[a-z].*\.js$/.test(filename);
-  })
-  .map(function(filename) {
-    return path.join(__dirname, '/models/', filename);
-  })
-  .forEach(require);
-
-jsonApi.onUncaughtException(function(request, error) {
+jsonApi.onUncaughtException((request, error) => {
   var errorDetails = error.stack.split('\n');
   console.error(JSON.stringify({
     request: request,
@@ -48,6 +38,11 @@ jsonApi.onUncaughtException(function(request, error) {
     stack: errorDetails
   }));
 });
+
+var buildRoute = require('./abstractRouteConstructor');
+fs.readdirSync(path.join(__dirname, '/models'))
+  .map((filename) => { return require(path.join(__dirname, '/models/', filename)); })
+  .map(buildRoute);
 
 jsonApi.start();
 server.start = jsonApi.start;
