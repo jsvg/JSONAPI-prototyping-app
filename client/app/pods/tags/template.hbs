@@ -1,0 +1,31 @@
+<ul>
+  {{#each model as |tag|}}
+    <li><strong>{{tag.tagName}}</strong></li>
+    <ul>
+      {{#if tag.articles}}
+        <li><em>Articles: </em>
+          <ul>
+            {{#each tag.articles as |article|}}
+              <li>{{article.title}}</li>
+            {{/each}}
+          </ul>
+        </li>
+      {{else}}
+        <li>No articles</li>
+      {{/if}}
+    </ul>
+    <ul>
+      {{#if tag.photos}}
+        <li><em>Photos: </em>
+          <ul>
+            {{#each tag.photos as |photo|}}
+              <li>{{photo.label}}</li>
+            {{/each}}
+          </ul>
+        </li>
+      {{else}}
+        <li>No photos</li>
+      {{/if}}
+    </ul>
+  {{/each}}
+</ul>

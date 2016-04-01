@@ -1,7 +1,7 @@
 var buildRoute = require('../abstractRouteConstructor');
 
 var schema = {
-  modelName: 'mockAuthors',
+  modelName: 'authors',
   nRecords: 2,
   attributes: {
     firstName: {
@@ -18,20 +18,20 @@ var schema = {
     }
   },
   relationships: {
-    'mockArticles': {
-      targetModel: 'mockArticles',
+    articles: {
+      targetModel: 'articles',
       relation: 'belongsToMany',
-      as: 'mockAuthor'
+      as: 'author'
     },
-    'mockPhotos': {
-      targetModel: 'mockPhotos',
+    photos: {
+      targetModel: 'photos',
       relation: 'belongsToMany',
-      as: 'mockAuthor'
+      as: 'author'
     },
-    'mockComments': {
-      targetModel: 'mockComments',
+    comments: {
+      targetModel: 'comments',
       relation: 'belongsToMany',
-      as: 'mockAuthor'
+      as: 'author'
     }
   }
 };

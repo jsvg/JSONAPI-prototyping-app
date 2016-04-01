@@ -1,0 +1,19 @@
+<ul>
+  {{#each model as |article|}}
+    <h2>{{article.title}}</h2>
+    <strong>Author: {{article.author.firstName}} {{article.author.lastName}}</strong>
+    <p>{{article.body}}</p>
+    <em>Comment</em>
+    <ul>
+      {{#each article.comments as |comment|}}
+        <li>{{comment.body}} <em>{{comment.author.firstName}} {{comment.author.lastName}}</em></li>
+      {{/each}}
+    </ul>
+    <p>Tags:
+      {{#each article.tags as |tag|}}
+        {{tag.tagName}}
+      {{/each}}
+    </p>
+    <br>
+  {{/each}}
+</ul>

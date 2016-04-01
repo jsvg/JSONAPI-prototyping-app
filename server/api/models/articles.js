@@ -1,10 +1,10 @@
 var buildRoute = require('../abstractRouteConstructor');
-require('./mockAuthors');
-require('./mockTags');
+require('./authors');
+require('./tags');
 
 var schema = {
-  modelName: 'mockArticles',
-  nRecords: 5,
+  modelName: 'articles',
+  nRecords: 15,
   attributes: {
     title: {
       type: 'string',
@@ -16,20 +16,20 @@ var schema = {
     }
   },
   relationships: {
-    'mockAuthor': {
-      targetModel: 'mockAuthors',
+    author: {
+      targetModel: 'authors',
       relation: 'one'
     },
-    'mockComments': {
-      targetModel: 'mockComments',
+    comments: {
+      targetModel: 'comments',
       relation: 'belongsToMany',
-      as: 'mockArticle'
+      as: 'article'
     },
-    'mockTags': {
-      targetModel: 'mockTags',
+    tags: {
+      targetModel: 'tags',
       relation: 'many',
       nMin: 1,
-      nMax: 3
+      nMax: 6
     }
   }
 };

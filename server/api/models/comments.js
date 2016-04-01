@@ -1,9 +1,9 @@
 var buildRoute = require('../abstractRouteConstructor');
-require('./mockArticles');
-require('./mockAuthors');
+require('./articles');
+require('./authors');
 
 var schema = {
-  modelName: 'mockComments',
+  modelName: 'comments',
   nRecords: 100,
   attributes: {
     body: {
@@ -12,12 +12,12 @@ var schema = {
     }
   },
   relationships: {
-    'mockAuthor': {
-      targetModel: 'mockAuthors',
+    author: {
+      targetModel: 'authors',
       relation: 'one'
     },
-    'mockArticle': {
-      targetModel: 'mockArticles',
+    article: {
+      targetModel: 'articles',
       relation: 'one'
     }
   }

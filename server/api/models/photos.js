@@ -1,9 +1,9 @@
 var buildRoute = require('../abstractRouteConstructor');
-require('./mockAuthors');
-require('./mockTags');
+require('./authors');
+require('./tags');
 
 var schema = {
-  modelName: 'mockPhotos',
+  modelName: 'photos',
   nRecords: 10,
   attributes: {
     label: {
@@ -16,15 +16,15 @@ var schema = {
     }
   },
   relationships: {
-    'mockAuthor': {
-      targetModel: 'mockAuthors',
+    author: {
+      targetModel: 'authors',
       relation: 'one'
     },
-    'mockTags': {
-      targetModel: 'mockTags',
+    tags: {
+      targetModel: 'tags',
       relation: 'many',
       nMin: 1,
-      nMax: 3
+      nMax: 6
     }
   }
 };

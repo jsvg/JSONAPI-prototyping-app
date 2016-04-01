@@ -1,7 +1,7 @@
 var buildRoute = require('../abstractRouteConstructor');
 
 var schema = {
-  modelName: 'mockTags',
+  modelName: 'tags',
   nRecords: 15,
   attributes: {
     tagName: {
@@ -10,12 +10,12 @@ var schema = {
     }
   },
   relationships: {
-    mockPhotos: {
-      targetModel: 'mockPhotos',
+    photos: {
+      targetModel: 'photos',
       relation: 'belongsToMany'
     },
-    mockArticles: {
-      targetModel: 'mockArticles',
+    articles: {
+      targetModel: 'articles',
       relation: 'belongsToMany'
     }
   }

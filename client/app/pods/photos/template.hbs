@@ -1,5 +1,12 @@
 <ul>
   {{#each model as |photo|}}
-    <li><a href={{photo.url}}>{{photo.label}}</a> by {{photo.photographer.firstName}} {{photo.photographer.lastName}}</li>
+    <li><a href={{photo.url}}>{{photo.label}}</a> by {{photo.author.firstName}} {{photo.author.lastName}}</li>
+    <ul>
+      <li>Tags: 
+        {{#each photo.tags as |tag|}}
+          {{tag.tagName}}
+        {{/each}}
+      </li>
+    </ul>
   {{/each}}
 </ul>
