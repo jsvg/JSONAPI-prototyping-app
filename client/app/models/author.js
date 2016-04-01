@@ -4,5 +4,6 @@ export default Model.extend({
   'firstName': attr('string'),
   'lastName': attr('string'),
   'email': attr('string'),
-  'articles': hasMany('article')
+  'articles': hasMany('article'),
+  'photos': hasMany('photo')
 });

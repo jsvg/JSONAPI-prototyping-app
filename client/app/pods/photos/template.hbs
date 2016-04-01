@@ -1,0 +1,5 @@
+<ul>
+  {{#each model as |photo|}}
+    <li><a href={{photo.url}}>{{photo.label}}</a> by {{photo.photographer.firstName}} {{photo.photographer.lastName}}</li>
+  {{/each}}
+</ul>

@@ -1,85 +1,50 @@
 var jsonApi = require('jsonapi-server');
 var jsf = require('json-schema-faker');
 var path = require('path');
+var _ = require('lodash');
+
 
 // extend chance with function to randomly select an item in an array
-jsf.extend('chance', function(chance){
+jsf.extend('chance', function(chance) {
   chance.mixin({
-    randInArray: function(arr) {
-      randInt = Math.ceil(Math.random() * arr.length - 1);
-      return arr[randInt];
+    randInArray: function(ids) {
+      randInt = Math.ceil(Math.random() * ids.length - 1);
+      return ids[randInt];
     }
   });
   return chance;
 });
 
-/*********************************
- * mixins for generating schemas *
- *********************************/
-// collect randomly generated IDs of models for use in relationship mapping
-var idStore = {};
-
-// consume schemas to create n number of jsf json data for "examples" in jsonApi
-function genModelData(n, model, props, refs) {
-  // construct "required" keys for item properties
-  var keys = ['id', 'type'];
-  for ( var k in props ) {
-    keys.push(k);
-  }
-  // set base schema object
-  var base = {
-    type: 'array',
-    minItems: n,
-    maxItems: n,
-    items: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          faker: 'random.uuid'
-        },
-        type: {
-          pattern: model
-        }
-      },
-      required: keys
+jsf.extend('chance', function(chance) {
+  chance.mixin({
+    randInArrayMany: function(ids, model) {
+      randInt = Math.ceil(Math.random() * ids.length - 1);
+      o = {};
+      o.type = model;
+      o.id = ids[randInt];
+      return o;
     }
-  };
-  // expand base object with properties
-  for (var attr in props) {
-    base.items.properties[attr] = props[attr];
-  }
+  });
+  return chance;
+});
 
-  // handling for relationships
-  if ( refs ) {
-    refsSchema = [{
-      id: refs.model,
-      type: refs.type ? refs.type : 'string',
-      chance: { randInArray: [refs.ids] }
-    }];
-  }
-
-  var data = refs ? jsf(base, refsSchema) : jsf(base);
-  idStore[model] = data.map(function(i) { return i.id; });
-  return data;
-}
-
-// serialize generated json data
-function genJsonApiSchema(model, attrs, data, namespace, idStore) {
-  namespace = namespace || 'json:api';
-  var base = {
-    namespace: namespace,
-    resource: model,
-    handlers: new jsonApi.MemoryHandler(),
-    searchParams: { },
-    attributes: attrs,
-    examples: data
-  };
-  return jsonApi.define(base);
+function getValidator(type, model, as) {
+  model = model || 'none';
+  as = as || 'none';
+  return {
+    // statics
+    string: jsonApi.Joi.string(),
+    number: jsonApi.Joi.number(),
+    date: jsonApi.Joi.date(),
+    any: jsonApi.Joi.any(),
+    // relations
+    one: jsonApi.Joi.one(model),
+    many: jsonApi.Joi.many(model),
+    belongsToOne: jsonApi.Joi.belongsToOne({resource: model, as: as}),
+    belongsToMany: jsonApi.Joi.belongsToMany({resource: model, as: as}),
+  }[type];
 }
 
 module.exports = {
-  generateData: genModelData,
-  genJsonApiSchema: genJsonApiSchema,
-  ids: idStore
+  getValidator: getValidator
 };

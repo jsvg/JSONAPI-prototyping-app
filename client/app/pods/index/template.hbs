@@ -1,1 +1,18 @@
-{{outlet}}
+{{#each model as |author|}}
+  <em>{{author.firstName}} {{author.lastName}}: {{author.email}}</em>
+  <ul>
+    <li><strong>Articles</strong></li>
+    <ul>
+      {{#each author.articles as |article|}}
+        <li>{{article.title}}</li>
+      {{/each}}
+    </ul>
+
+    <li><strong>Photos</strong></li>
+    <ul>
+      {{#each author.photos as |photo|}}
+        <li><a href={{photo.url}}>{{photo.label}}</a></li>
+      {{/each}}
+    </ul>
+  </ul>
+{{/each}}

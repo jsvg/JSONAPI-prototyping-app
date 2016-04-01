@@ -1,13 +1,2 @@
-<ul>
-  {{#each model as |author|}}
-    <li>{{author.firstName}} {{author.lastName}}: {{author.email}}</li>
-    <ul>
-      {{#each author.articles as |article|}}
-        <li>{{article.body}}</li>
-      {{/each}}
-    </ul>
-  {{/each}}
-</ul>
-
-
+<h2>{{link-to "Home" "application"}} || {{link-to "Photos" "photos"}}</h2>
 {{outlet}}
