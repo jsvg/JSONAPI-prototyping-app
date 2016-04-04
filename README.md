@@ -25,6 +25,9 @@ Not Working: Need to abstract and generalize schema defining.
 * Ember.js
 
 ## Loading
-1. git clone this dir
-2. cd client && npm install && bower install && ember s
-3. cd server && npm install && npm start
+1. $ git clone this dir
+2. $ cd client && npm install && bower install && ember s
+3. $ cd server && npm install && npm start
+
+## Debugging
+$ DEBUG=jsonApi:* node api/server.js 
